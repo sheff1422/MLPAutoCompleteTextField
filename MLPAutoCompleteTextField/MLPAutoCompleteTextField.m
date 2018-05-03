@@ -33,7 +33,9 @@ const NSTimeInterval DefaultAutoCompleteRequestDelay = 0.1;
 
 - (instancetype)initWithDelegate:(id<MLPAutoCompleteSortOperationDelegate>)aDelegate
                 incompleteString:(NSString *)string
-             possibleCompletions:(NSArray *)possibleStrings;
+             possibleCompletions:(NSArray *)possibleStrings NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 - (NSArray *)sortedCompletionsForString:(NSString *)inputString
                     withPossibleStrings:(NSArray *)possibleTerms;
@@ -41,7 +43,9 @@ const NSTimeInterval DefaultAutoCompleteRequestDelay = 0.1;
 
 static NSString *kFetchedTermsKey = @"terms";
 static NSString *kFetchedStringKey = @"fetchInputString";
+
 @interface MLPAutoCompleteFetchOperation: NSOperation
+
 @property (strong) NSString *incompleteString;
 @property (strong) MLPAutoCompleteTextField *textField;
 @property (strong) id <MLPAutoCompleteFetchOperationDelegate> delegate;
@@ -49,7 +53,9 @@ static NSString *kFetchedStringKey = @"fetchInputString";
 
 - (instancetype)initWithDelegate:(id<MLPAutoCompleteFetchOperationDelegate>)aDelegate
            completionsDataSource:(id<MLPAutoCompleteTextFieldDataSource>)aDataSource
-           autoCompleteTextField:(MLPAutoCompleteTextField *)aTextField;
+           autoCompleteTextField:(MLPAutoCompleteTextField *)aTextField NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 
@@ -58,7 +64,9 @@ static NSString *kBorderStyleKeyPath = @"borderStyle";
 static NSString *kAutoCompleteTableViewHiddenKeyPath = @"autoCompleteTableView.hidden";
 static NSString *kBackgroundColorKeyPath = @"backgroundColor";
 static NSString *kDefaultAutoCompleteCellIdentifier = @"_DefaultAutoCompleteCellIdentifier";
+
 @interface MLPAutoCompleteTextField ()
+
 @property (strong, readwrite) UITableView *autoCompleteTableView;
 @property (strong) NSArray *autoCompleteSuggestions;
 @property (strong) NSOperationQueue *autoCompleteSortQueue;
@@ -67,6 +75,7 @@ static NSString *kDefaultAutoCompleteCellIdentifier = @"_DefaultAutoCompleteCell
 @property (assign) CGColorRef originalShadowColor;
 @property (assign) CGSize originalShadowOffset;
 @property (assign) CGFloat originalShadowOpacity;
+
 @end
 
 
@@ -80,6 +89,7 @@ static NSString *kDefaultAutoCompleteCellIdentifier = @"_DefaultAutoCompleteCell
     if (self) {
         [self initialize];
     }
+    
     return self;
 }
 
@@ -89,6 +99,7 @@ static NSString *kDefaultAutoCompleteCellIdentifier = @"_DefaultAutoCompleteCell
     if (self) {
         [self initialize];
     }
+    
     return self;
 }
 
@@ -148,7 +159,10 @@ static NSString *kDefaultAutoCompleteCellIdentifier = @"_DefaultAutoCompleteCell
 }
 
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(nullable NSString *)keyPath
+                      ofObject:(nullable id)object
+                        change:(nullable NSDictionary<NSKeyValueChangeKey, id> *)change
+                       context:(nullable void *)context {
     if ([keyPath isEqualToString:kBorderStyleKeyPath]) {
         [self styleAutoCompleteTableForBorderStyle:self.borderStyle];
     } else if ([keyPath isEqualToString:kAutoCompleteTableViewHiddenKeyPath]) {
@@ -196,7 +210,7 @@ static NSString *kDefaultAutoCompleteCellIdentifier = @"_DefaultAutoCompleteCell
     if ([autoCompleteObject isKindOfClass:[NSString class]]){
         suggestedString = (NSString *)autoCompleteObject;
     } else if ([autoCompleteObject conformsToProtocol:@protocol(MLPAutoCompletionObject)]){
-        suggestedString = [(id <MLPAutoCompletionObject>)autoCompleteObject autocompleteString];
+        suggestedString = ((id <MLPAutoCompletionObject>)autoCompleteObject).autocompleteString;
     } else {
         NSAssert(0, @"Autocomplete suggestions must either be NSString or objects conforming to the MLPAutoCompletionObject protocol.");
     }
@@ -429,7 +443,7 @@ withAutoCompleteString:(NSString *)string {
 #else
         
         if (self.addDropdownToRootView) {
-            UIView *rootView = [self.window.subviews firstObject];
+            UIView *rootView = (self.window.subviews).firstObject;
             [rootView addSubview:self.autoCompleteTableView];
         } else {
             [self.superview insertSubview:self.autoCompleteTableView
@@ -571,7 +585,7 @@ withAutoCompleteString:(NSString *)string {
         newAutoCompleteTableViewFrame.origin.x = 0;
     }
     if (self.addDropdownToRootView) {
-        UIView *rootView = [self.window.subviews firstObject];
+        UIView *rootView = (self.window.subviews).firstObject;
         
         CGPoint convertedPoint = [self convertPoint:self.frame.origin
                                              toView:rootView];
@@ -867,7 +881,8 @@ withAutoCompleteString:(NSString *)string {
 
 #pragma mark -
 #pragma mark - MLPAutoCompleteFetchOperation
-@implementation MLPAutoCompleteFetchOperation{
+
+@implementation MLPAutoCompleteFetchOperation {
     dispatch_semaphore_t sentinelSemaphore;
 }
 
@@ -917,7 +932,7 @@ withAutoCompleteString:(NSString *)string {
 
 - (void)didReceiveSuggestions:(NSArray *)suggestions {
     if (suggestions == nil){
-        suggestions = [NSArray array];
+        suggestions = @[];
     }
     
     if (!self.isCancelled){
@@ -1016,7 +1031,7 @@ withAutoCompleteString:(NSString *)string {
     }
     
     if (self.isCancelled){
-        return [NSArray array];
+        return @[];
     }
     
     NSMutableArray *editDistances = [NSMutableArray arrayWithCapacity:possibleTerms.count];
@@ -1029,13 +1044,13 @@ withAutoCompleteString:(NSString *)string {
         if ([originalObject isKindOfClass:[NSString class]]){
             currentString = (NSString *)originalObject;
         } else if ([originalObject conformsToProtocol:@protocol(MLPAutoCompletionObject)]){
-            currentString = [(id <MLPAutoCompletionObject>)originalObject autocompleteString];
+            currentString = ((id <MLPAutoCompletionObject>)originalObject).autocompleteString;
         } else {
             NSAssert(0, @"Autocompletion terms must either be strings or objects conforming to the MLPAutoCompleteObject protocol.");
         }
         
         if (self.isCancelled){
-            return [NSArray array];
+            return @[];
         }
         
         NSUInteger maximumRange = (inputString.length < currentString.length) ? inputString.length : currentString.length;
@@ -1052,7 +1067,7 @@ withAutoCompleteString:(NSString *)string {
     }
     
     if (self.isCancelled){
-        return [NSArray array];
+        return @[];
     }
     
     [editDistances sortUsingComparator:^(NSDictionary *string1Dictionary,
@@ -1070,7 +1085,7 @@ withAutoCompleteString:(NSString *)string {
     for (NSDictionary *stringsWithEditDistances in editDistances){
         
         if (self.isCancelled){
-            return [NSArray array];
+            return @[];
         }
         
         NSObject *autoCompleteObject = stringsWithEditDistances[kSortObjectKey];

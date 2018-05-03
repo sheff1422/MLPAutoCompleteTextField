@@ -23,12 +23,14 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.view setAlpha:0];
+    [super viewWillAppear:animated];
+    
+    (self.view).alpha = 0;
     [UIView animateWithDuration:0.2
                           delay:0.25
-                        options:UIViewAnimationCurveEaseOut
+                        options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         [self.view setAlpha:1.0];
+                         (self.view).alpha = 1.0;
                      }completion:nil];
 }
 
@@ -55,7 +57,7 @@
     //[self.autocompleteTextField setBorderStyle:UITextBorderStyleBezel];
     //[self.autocompleteTextField setBorderStyle:UITextBorderStyleLine];
     //[self.autocompleteTextField setBorderStyle:UITextBorderStyleNone];
-    [self.autocompleteTextField setBorderStyle:UITextBorderStyleRoundedRect];
+    (self.autocompleteTextField).borderStyle = UITextBorderStyleRoundedRect;
     
 
     //[self.autocompleteTextField setShowAutoCompleteTableWhenEditingBegins:YES];
@@ -63,7 +65,7 @@
     
     //You can use custom TableViewCell classes and nibs in the autocomplete tableview if you wish.
     //This is only supported in iOS 6.0, in iOS 5.0 you can set a custom NIB for the cell
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0" options:NSNumericSearch] != NSOrderedAscending) {
+    if ([[UIDevice currentDevice].systemVersion compare:@"6.0" options:NSNumericSearch] != NSOrderedAscending) {
         [self.autocompleteTextField registerAutoCompleteCellClass:[DEMOCustomAutoCompleteCell class]
                                            forCellReuseIdentifier:@"CustomCellId"];
     }
@@ -175,7 +177,7 @@
     NSString *filename = [autocompleteString stringByAppendingString:@".png"];
     filename = [filename stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     filename = [filename stringByReplacingOccurrencesOfString:@"&" withString:@"and"];
-    [cell.imageView setImage:[UIImage imageNamed:filename]];
+    (cell.imageView).image = [UIImage imageNamed:filename];
     
     return YES;
 }
@@ -186,7 +188,7 @@
     forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(selectedObject){
-        NSLog(@"selected object from autocomplete menu %@ with string %@", selectedObject, [selectedObject autocompleteString]);
+        NSLog(@"selected object from autocomplete menu %@ with string %@", selectedObject, selectedObject.autocompleteString);
     } else {
         NSLog(@"selected string '%@' from autocomplete menu", selectedString);
     }

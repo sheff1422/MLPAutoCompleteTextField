@@ -15,11 +15,11 @@
 @implementation DEMOCustomAutoCompleteObject
 
 
-- (id)initWithCountry:(NSString *)name
+- (instancetype)initWithCountry:(NSString *)name
 {
     self = [super init];
     if (self) {
-        [self setCountryName:name];
+        self.countryName = name;
     }
     return self;
 }

@@ -11,6 +11,8 @@
 
 @interface DEMOCustomAutoCompleteObject : NSObject <MLPAutoCompletionObject>
 
-- (id)initWithCountry:(NSString *)name;
+- (instancetype)initWithCountry:(NSString *)name NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 @end

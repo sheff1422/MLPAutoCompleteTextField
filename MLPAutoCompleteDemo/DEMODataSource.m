@@ -78,7 +78,7 @@
             [mutableCountries addObject:country];
         }
         
-        [self setCountryObjects:[NSArray arrayWithArray:mutableCountries]];
+        self.countryObjects = [NSArray arrayWithArray:mutableCountries];
     }
     
     return self.countryObjects;

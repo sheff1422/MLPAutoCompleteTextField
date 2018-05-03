@@ -14,15 +14,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     // Override point for customization after application launch.
     self.viewController = [[DEMOViewController alloc] initWithNibName:@"View" bundle:[NSBundle mainBundle]];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     //[self customizeAppearance];
-    [self.window.layer setCornerRadius:4];
+    (self.window.layer).cornerRadius = 4;
     [self.window.layer setMasksToBounds:YES];
-    [self.window setBackgroundColor:self.viewController.view.backgroundColor];
+    (self.window).backgroundColor = self.viewController.view.backgroundColor;
     return YES;
 }
 
@@ -54,16 +54,16 @@
                                                               kCGImageAlphaPremultipliedFirst);
     
     
-    CGPathRef path = [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 4, 4)
-                                                 cornerRadius:1] CGPath];
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 4, 4)
+                                                 cornerRadius:1].CGPath;
     
     CGContextAddPath(composedImageContext, path);
     
-    CGContextSetFillColorWithColor(composedImageContext, [self.mainloopBlueColor CGColor]);
+    CGContextSetFillColorWithColor(composedImageContext, (self.mainloopBlueColor).CGColor);
     
     CGContextSaveGState(composedImageContext);
     UIColor *shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2];
-    CGContextSetShadowWithColor(composedImageContext, CGSizeMake(1, -1), 2, [shadowColor CGColor]);
+    CGContextSetShadowWithColor(composedImageContext, CGSizeMake(1, -1), 2, shadowColor.CGColor);
    
     CGContextFillPath(composedImageContext);
     CGContextRestoreGState(composedImageContext);
@@ -96,12 +96,12 @@
                                                               kCGImageAlphaPremultipliedFirst);
     
     CGRect pathRect = CGRectInset(rect, 4, 4);
-    CGPathRef path = [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 4, 4)
-                                                 cornerRadius:1] CGPath];
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 4, 4)
+                                                 cornerRadius:1].CGPath;
     
     CGContextAddPath(composedImageContext, path);
     
-    CGContextSetFillColorWithColor(composedImageContext, [self.darkBlueColor CGColor]);
+    CGContextSetFillColorWithColor(composedImageContext, (self.darkBlueColor).CGColor);
     
     CGContextFillPath(composedImageContext);
     
@@ -113,7 +113,7 @@
     CGContextClip(composedImageContext);
     
     UIColor *shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2];
-    CGContextSetShadowWithColor(composedImageContext, CGSizeMake(1, -1), 2, [shadowColor CGColor]);
+    CGContextSetShadowWithColor(composedImageContext, CGSizeMake(1, -1), 2, shadowColor.CGColor);
     CGContextSetBlendMode(composedImageContext, kCGBlendModeMultiply);
     CGContextSaveGState(composedImageContext);
     CGContextAddPath(composedImageContext, outerRectPath);
@@ -153,11 +153,11 @@
     
     CGContextAddPath(composedImageContext, path);
     
-    CGContextSetFillColorWithColor(composedImageContext, [self.darkBlueColor CGColor]);
+    CGContextSetFillColorWithColor(composedImageContext, (self.darkBlueColor).CGColor);
     
     CGContextSaveGState(composedImageContext);
     UIColor *shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2];
-    CGContextSetShadowWithColor(composedImageContext, CGSizeMake(0, -1), 2, [shadowColor CGColor]);
+    CGContextSetShadowWithColor(composedImageContext, CGSizeMake(0, -1), 2, shadowColor.CGColor);
  
     CGContextFillPath(composedImageContext);
     CGContextRestoreGState(composedImageContext);
