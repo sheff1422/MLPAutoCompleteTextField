@@ -14,7 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 
-#import <Foundation/Foundation.h>
 
 /*
  In some cases you may want strings in an autocomplete menu to be associated to some kind of model object 
@@ -30,6 +29,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 /*Return the string that should be displayed in the autocomplete menu that 
  represents this object. (For example: a person's name.)*/
-- (NSString *)autocompleteString;
+@property (nonatomic, readonly, copy) NSString *autocompleteString;
 
 @end

@@ -19,7 +19,7 @@
 
 @protocol MLPAutoCompleteSortOperationDelegate <NSObject>
 - (void)autoCompleteTermsDidSort:(NSArray *)completions;
-- (NSInteger)maximumEditDistanceForAutoCompleteTerms;
+@property (nonatomic, readonly) NSInteger maximumEditDistanceForAutoCompleteTerms;
 @end
 
 @protocol MLPAutoCompleteFetchOperationDelegate <NSObject>
@@ -29,7 +29,7 @@
 
 @interface MLPAutoCompleteTextField : UITextField <UITableViewDataSource, UITableViewDelegate, MLPAutoCompleteSortOperationDelegate, MLPAutoCompleteFetchOperationDelegate>
 
-+ (NSString *) accessibilityLabelForIndexPath:(NSIndexPath *)indexPath;
++ (NSString *)accessibilityLabelForIndexPath:(NSIndexPath *)indexPath;
 
 @property (strong, readonly) UITableView *autoCompleteTableView;
 
@@ -72,6 +72,10 @@
 @property (strong) UIColor *autoCompleteTableCellBackgroundColor;
 @property (strong) UIColor *autoCompleteTableCellTextColor;
 
+
+@property(nonatomic) BOOL fullDropdownWidth;
+
+@property(nonatomic) BOOL addDropdownToRootView;
 
 - (void)registerAutoCompleteCellNib:(UINib *)nib forCellReuseIdentifier:(NSString *)reuseIdentifier;
 

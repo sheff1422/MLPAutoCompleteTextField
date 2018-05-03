@@ -17,7 +17,7 @@
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
  
- * Redistributions of source code must retain the above copyright
+ * Redistributions of source code must strong the above copyright
  notice, this list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright
  notice, this list of conditions and the following disclaimer in the
@@ -46,15 +46,13 @@ int smallestOf(int a, int b, int c);
 
 @implementation NSString (Levenshtein)
 
-- (float) asciiLevenshteinDistanceWithString: (NSString *)stringB
-{
+- (float) asciiLevenshteinDistanceWithString: (NSString *)stringB {
     return [self asciiLevenshteinDistanceWithString:stringB
                                skippingCharacterSet:nil];
 }
 
 
-- (float) asciiLevenshteinDistanceWithString: (NSString *)stringB skippingCharacterSet: (NSCharacterSet *)charset
-{
+- (float)asciiLevenshteinDistanceWithString:(NSString *)stringB skippingCharacterSet:(NSCharacterSet *)charset {
     // try to convince caller that a nil object is *really* different from any string
     if (!stringB)
         return LEV_INF_DISTANCE;
@@ -76,34 +74,34 @@ int smallestOf(int a, int b, int c);
     NSData *dataB = [stringB dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
     // not really cstrings, since not nul terminated
-    const char *cstringA = [dataA bytes];
-    const char *cstringB = [dataB bytes];
+    const char *cstringA = dataA.bytes;
+    const char *cstringB = dataB.bytes;
     
     // Calculate Levenshtein distance
     
     // Step 1
     int k, i, j, cost, * d, distance;
     
-    NSUInteger n = [dataA length];
-    NSUInteger m = [dataB length];
+    NSUInteger n = dataA.length;
+    NSUInteger m = dataB.length;
     
-    if( n++ != 0 && m++ != 0 ) {
+    if ( n++ != 0 && m++ != 0 ) {
         
         d = malloc( sizeof(int) * m * n );
         
         // Step 2
-        for( k = 0; k < n; k++)
+        for ( k = 0; k < n; k++)
             d[k] = k;
         
-        for( k = 0; k < m; k++)
+        for ( k = 0; k < m; k++)
             d[ k * n ] = k;
         
         // Step 3 and 4
-        for( i = 1; i < n; i++ )
-            for( j = 1; j < m; j++ ) {
+        for ( i = 1; i < n; i++ )
+            for ( j = 1; j < m; j++ ) {
                 
                 // Step 5
-                if( cstringA[i-1] == cstringB[j-1] )
+                if ( cstringA[i-1] == cstringB[j-1] )
                     cost = 0;
                 else
                     cost = 1;
@@ -124,13 +122,12 @@ int smallestOf(int a, int b, int c);
 }
 
 // return the minimum of a, b and c
-int smallestOf(int a, int b, int c)
-{
+int smallestOf(int a, int b, int c) {
     int min = a;
     if ( b < min )
         min = b;
     
-    if( c < min )
+    if ( c < min )
         min = c;
     
     return min;
