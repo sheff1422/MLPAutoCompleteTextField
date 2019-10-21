@@ -109,6 +109,7 @@ static NSString *kDefaultAutoCompleteCellIdentifier = @"_DefaultAutoCompleteCell
 }
 
 - (void)initialize {
+    self.addDropdownToRootView = YES;
     [self beginObservingKeyPathsAndNotifications];
     
     [self setDefaultValuesForVariables];
@@ -590,8 +591,7 @@ withAutoCompleteString:(NSString *)string {
         CGPoint convertedPoint = [self convertPoint:self.frame.origin
                                              toView:rootView];
         
-        newAutoCompleteTableViewFrame.origin.x += self.autoCompleteTableOriginOffset.width;
-        newAutoCompleteTableViewFrame.origin.y = convertedPoint.y + self.frame.size.height + self.autoCompleteTableOriginOffset.height;
+        //        newAutoCompleteTableViewFrame.origin.x = convertedPoint.x + self.autoCompleteTableOriginOffset.width;
     } else {
         newAutoCompleteTableViewFrame.origin.y = - (newAutoCompleteTableViewFrame.size.height) + self.bounds.size.height + self.autoCompleteTableOriginOffset.height;
     }
@@ -689,7 +689,7 @@ withAutoCompleteString:(NSString *)string {
 
 - (void)setNoneStyleForAutoCompleteTableView {
     self.autoCompleteTableCornerRadius = 8.0;
-    self.autoCompleteTableOriginOffset = CGSizeMake(0, 7);
+    self.autoCompleteTableOriginOffset = CGSizeMake(0, 0.0);
     self.autoCompleteScrollIndicatorInsets = UIEdgeInsetsZero;
     self.autoCompleteContentInsets = UIEdgeInsetsZero;
     self.autoCompleteTableBorderWidth = 1.0;
@@ -711,7 +711,7 @@ withAutoCompleteString:(NSString *)string {
     if (self.backgroundColor == [UIColor clearColor]){
         self.autoCompleteTableBackgroundColor = [UIColor whiteColor];
     } else {
-        self.autoCompleteTableBackgroundColor = self.backgroundColor;
+        self.autoCompleteTableBackgroundColor = [UIColor whiteColor];
     }
 }
 
@@ -769,6 +769,7 @@ withAutoCompleteString:(NSString *)string {
     
     UITableView *newTableView = [[UITableView alloc] initWithFrame:dropDownTableFrame
                                                                style:UITableViewStylePlain];
+    newTableView.backgroundColor = [UIColor whiteColor];
     newTableView.delegate = textField;
     newTableView.dataSource = textField;
     [newTableView setScrollEnabled:YES];
