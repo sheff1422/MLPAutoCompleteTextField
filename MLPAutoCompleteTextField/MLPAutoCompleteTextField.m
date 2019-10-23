@@ -590,7 +590,7 @@ withAutoCompleteString:(NSString *)string {
         
         CGPoint convertedPoint = [self convertPoint:self.frame.origin
                                              toView:rootView];
-        
+        newAutoCompleteTableViewFrame.origin.y = convertedPoint.y + self.frame.size.height +  self.autoCompleteTableOriginOffset.height;
         //        newAutoCompleteTableViewFrame.origin.x = convertedPoint.x + self.autoCompleteTableOriginOffset.width;
     } else {
         newAutoCompleteTableViewFrame.origin.y = - (newAutoCompleteTableViewFrame.size.height) + self.bounds.size.height + self.autoCompleteTableOriginOffset.height;
