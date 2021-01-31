@@ -73,9 +73,10 @@
 @property (strong) UIColor *autoCompleteTableCellTextColor;
 
 
-@property(nonatomic) BOOL fullDropdownWidth;
+@property (nonatomic) BOOL fullDropdownWidth;
 
-@property(nonatomic) BOOL addDropdownToRootView;
+@property (nonatomic) BOOL addDropdownToRootView;
+@property (nonatomic, weak) UIView *contentView;
 
 - (void)registerAutoCompleteCellNib:(UINib *)nib forCellReuseIdentifier:(NSString *)reuseIdentifier;
 

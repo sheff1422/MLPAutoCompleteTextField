@@ -443,10 +443,12 @@ withAutoCompleteString:(NSString *)string {
                    belowSubview:self];
 #else
         
-        if (self.addDropdownToRootView) {
+        if (self.contentView) {
+            [self.contentView addSubview:self.autoCompleteTableView];
+        } else if (self.addDropdownToRootView) {
             UIView *rootView = (self.window.subviews).firstObject;
             [rootView addSubview:self.autoCompleteTableView];
-        } else {
+        }  else {
             [self.superview insertSubview:self.autoCompleteTableView
                              belowSubview:self];
         }
@@ -585,7 +587,12 @@ withAutoCompleteString:(NSString *)string {
         newAutoCompleteTableViewFrame.size.width = [UIScreen mainScreen].bounds.size.width;
         newAutoCompleteTableViewFrame.origin.x = 0;
     }
-    if (self.addDropdownToRootView) {
+    if (self.contentView) {
+        
+        CGPoint convertedPoint = [self convertPoint:self.frame.origin
+                                             toView:self.contentView];
+        newAutoCompleteTableViewFrame.origin.y = convertedPoint.y + self.frame.size.height +  self.autoCompleteTableOriginOffset.height;
+    } else  if (self.addDropdownToRootView) {
         UIView *rootView = (self.window.subviews).firstObject;
         
         CGPoint convertedPoint = [self convertPoint:self.frame.origin
