@@ -592,6 +592,7 @@ withAutoCompleteString:(NSString *)string {
         CGPoint convertedPoint = [self convertPoint:self.frame.origin
                                              toView:self.contentView];
         newAutoCompleteTableViewFrame.origin.y = convertedPoint.y + self.frame.size.height +  self.autoCompleteTableOriginOffset.height;
+        newAutoCompleteTableViewFrame.origin.x = convertedPoint.x + self.autoCompleteTableOriginOffset.width;
     } else  if (self.addDropdownToRootView) {
         UIView *rootView = (self.window.subviews).firstObject;
         
